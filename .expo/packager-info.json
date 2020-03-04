@@ -1,0 +1,10 @@
+{
+  "packagerPort": 19001,
+  "packagerPid": 10532,
+  "expoServerPort": 19000,
+  "expoServerNgrokUrl": "https://zi-cmv.anonymous.project1.exp.direct",
+  "packagerNgrokUrl": "https://packager.zi-cmv.anonymous.project1.exp.direct",
+  "ngrokPid": 14060,
+  "devToolsPort": 19002,
+  "webpackServerPort": 19006
+}
