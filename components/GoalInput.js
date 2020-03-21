@@ -10,12 +10,9 @@ const GoalInput = props => {
     };
 
     const addGoalHandler = () => {
-        props.onAddGoal(enteredGoal);
-        setEnteredGoal('')
+        props.onAddGoal(enteredGoal);    
+            setEnteredGoal('') ; 
     }
-
-
-
     return (
         <Modal visible={props.visible} animationType="slide">
 
