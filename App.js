@@ -1,24 +1,19 @@
 import React, { Component, useState } from "react";
-import {
-  Vibration,
-  Image,
-  StyleSheet,
-  Text,
-  View,
-  Button,
-  FlatList
-} from "react-native";
+import { Image, StyleSheet, Text, View, Button, FlatList } from "react-native";
 import GoalItem from "./components/Goalitem";
 import GoalInput from "./components/GoalInput";
 import Counter from "./components/Counter";
 import logo from "./assets/images/bell.png";
 import registerForPushNotificationsAsync from "./components/registerForPushNotificationsAsync";
+import MessageInput from "./components/MessageInput";
 
 export default function App() {
   const [courseGoals, setCourseGoals] = useState([]);
   const [isAddMode, setIsAddMode] = useState(false);
   const [isAddModeCount, setIsAddModeCount] = useState(false);
+  const [isAddMessage, setIsAddMessage] = useState(false);
   const [count, setCount] = useState(0);
+  const [message, setMessage] = useState("");
 
   const addGoalHandler = goalTitle => {
     if (goalTitle.length === 0) {
@@ -29,6 +24,15 @@ export default function App() {
       { id: Math.random().toString(), value: goalTitle }
     ]);
     setIsAddMode(false);
+  };
+
+  const addMessageHandler = enteredMessage => {
+    if(enteredMessage.length===0){
+      return ;
+    }
+    setMessage(enteredMessage);
+    registerForPushNotificationsAsync(enteredMessage);
+    setIsAddMessage(false);
   };
 
   const removeGoalHandler = goalId => {
@@ -45,9 +49,12 @@ export default function App() {
     setIsAddMode(false);
   };
 
+  const closeMessageModal = () => {
+    setIsAddMessage(false);
+  };
+
   const notificationResolve = () => {
-     registerForPushNotificationsAsync();
-     
+    registerForPushNotificationsAsync(message);
   };
 
   return (
@@ -65,7 +72,18 @@ export default function App() {
         <Text>Count : {count}</Text>
         <Text>Goal Item Count: {courseGoals.length}</Text>
       </View>
+
       <Button title="Push Notification" onPress={notificationResolve} />
+
+      <View style={styles.button}>
+        <Button title="Change Message" onPress={() => setIsAddMessage(true)} />
+      </View>
+
+      <MessageInput
+        visibility={isAddMessage}
+        onAddMessage={addMessageHandler}
+        onClose={closeMessageModal}
+      />
 
       <Counter visible={isAddModeCount} onClose={closeModal} />
 
@@ -94,6 +112,6 @@ const styles = StyleSheet.create({
     padding: 50
   },
   button: {
-    marginBottom: 10
+    marginTop: 10,
   }
 });
